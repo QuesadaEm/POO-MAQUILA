@@ -72,7 +72,8 @@ POO-MAQUILA/
     │   ├── MenuInventario.java                  [A]
     │   └── MenuProduccion.java                  [B]
     └── util/
-        └── Consola.java                         [AMBOS] Lectura validada y limpieza de pantalla
+        ├── Consola.java                         [AMBOS] Lectura validada y limpieza de pantalla
+    └── Validaciones.java                    [A] Reglas comunes de validación
 ```
 
 > **Nota de Arquitectura:** Se incluye una capa `presentacion` independiente además de las tres capas estándar (modelo, datos y negocio) para cumplir explícitamente con la separación de consola solicitada en los requerimientos.
@@ -89,7 +90,7 @@ POO-MAQUILA/
    - `listar()`
    - `eliminar(String)`
 2. **Excepciones base:**
-   - `NegocioException`
+   - `NegocioException` (no verificada: hereda de `RuntimeException`)
    - `ElementoNoEncontradoException` (hereda de `NegocioException`)
 3. **`Consola` (Utilidad con validación):**
    - `leerEntero(msg, min, max)`
@@ -106,9 +107,10 @@ POO-MAQUILA/
    - `ServicioInventario.hayExistencias(String codigo, int cant)`
    - `ServicioInventario.consumir(String codigo, int cant) throws ExistenciasInsuficientesException`
    - `ExistenciasInsuficientesException(String mensaje)`, que hereda de `NegocioException`
-5. **IDs acordados para los datos iniciales:**
-   - Colaboradores `C001`–`C008` (C001–C003 y C008 operarios, C004–C005 supervisores, C006–C007 administrativos).
-   - Insumos `INS01` tela, `INS02` hilo, `INS03` botones, `INS04` etiquetas, `INS05` bolsas de empaque.
+   - `ServicioInventario.consumirLote(Map<String, Integer>, productoId, etapa)`: descuenta todo o nada y deja el producto en el movimiento.
+5. **IDs de los datos iniciales (carga de Persona A):**
+   - Colaboradores: operarios `OP01`–`OP04`, supervisores `SU01`–`SU02`, administrativos `AD01`–`AD02`.
+   - Insumos: telas `T01`–`T03` (en cm), hilos `H01`–`H02` (en m), botones `B01`, cierres `C01`, etiquetas `E01`, bolsas `O01`, elástico `O02`.
 
 ---
 
@@ -145,8 +147,8 @@ POO-MAQUILA/
 
     | Orden | Etapa | Responsable | Consume | Regla propia |
     | :---: | :--- | :--- | :--- | :--- |
-    | 1 | `EtapaCorte` | Operario | Tela | Suma 10 % de desperdicio (redondeado hacia arriba). |
-    | 2 | `EtapaConfeccion` | Operario | Hilo, botones, 1 etiqueta y 1 bolsa | Tiempo estimado de 45 minutos. |
+    | 1 | `EtapaCorte` | Operario | La tela elegida al crear el producto (cm) | Suma 10 % de desperdicio (redondeado hacia arriba). |
+    | 2 | `EtapaConfeccion` | Operario | Hilo `H01`, botones `B01`, 1 etiqueta `E01` y 1 bolsa `O01` | Tiempo estimado de 45 minutos. |
     | 3 | `EtapaControlCalidad` | Supervisor | Nada | Si hay al menos una prenda defectuosa, el producto queda `RECHAZADO`. |
 
   * **`EstadoProducto` (Enum):** `PENDIENTE`, `EN_PROCESO`, `RECHAZADO`, `TERMINADO`.
