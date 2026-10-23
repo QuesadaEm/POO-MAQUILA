@@ -1,6 +1,6 @@
 # POO-MAQUILA
 
-Sistema de gestión para maquila desarrollado bajo el paradigma de Programación Orientada a Objetos (POO) en Java.
+Sistema de gestión para una maquila textil, desarrollado bajo el paradigma de Programación Orientada a Objetos (POO) en Java.
 
 ---
 
@@ -9,71 +9,79 @@ Sistema de gestión para maquila desarrollado bajo el paradigma de Programación
 | Integrante | Áreas Asignadas | Responsabilidad principal |
 | :--- | :--- | :--- |
 | **Persona A** | Personal + Inventario | Módulos base de colaboradores, salarios y control de stock. |
-| **Persona B** | Productos y Procesos + Main | Módulo de producción, etapas del proceso, menú principal e integración. |
+| **Persona B** | Producción + Main | Módulo de producción, etapas del proceso, consultas cruzadas, menú principal e integración. |
+
+---
+
+## Cómo abrir y ejecutar
+
+Es un proyecto de **NetBeans (Ant)**: `File > Open Project`, elegir la carpeta `POO-MAQUILA` y ejecutar con **Run (F6)**.
+La clase principal es `Main` y el proyecto está configurado para Java 11 con codificación UTF-8.
 
 ---
 
 ## Estructura del Proyecto
 
 ```text
-src/
-├── Main.java                             [B]
-├── modelo/
-│   ├── personal/
-│   │   ├── Colaborador.java              [A] Abstracta
-│   │   ├── Operario.java                 [A] extends Colaborador
-│   │   ├── Supervisor.java               [A] extends Colaborador
-│   │   ├── Administrativo.java           [A] extends Colaborador
-│   │   └── Jornada.java                  [A] Enum
-│   ├── inventario/
-│   │   ├── Insumo.java                   [A]
-│   │   ├── CategoriaInsumo.java          [A] Enum
-│   │   └── MovimientoInventario.java     [A] Entrada / Salida
-│   └── produccion/
-│       ├── Lote.java                     [B]
-│       ├── EstadoProducto.java           [B] Enum
-│       ├── Etapa.java                    [B] Abstracta
-│       ├── EtapaCorte.java               [B]
-│       ├── EtapaConfeccion.java          [B]
-│       ├── EtapaAcabado.java             [B]
-│       ├── EtapaControlCalidad.java       [B]
-│       ├── RequerimientoInsumo.java       [B] Insumo + Cantidad
-│       ├── TipoPrenda.java               [B] Enum
-│       ├── EstadoLote.java               [B] Enum
-│       └── RegistroAvance.java           [B] Historial
-├── datos/
-│   ├── Repositorio.java                  [AMBOS] Interfaz genérica
-│   ├── RepositorioColaboradores.java     [A]
-│   ├── RepositorioInsumos.java           [A]
-│   ├── RepositorioProductos.java         [B]
-│   ├── CargaDatosPersonalInventario.java [A]
-│   └── CargaDatosProduccion.java         [B]
-├── negocio/
-│   ├── ServicioColaboradores.java        [A]
-│   ├── ServicioInventario.java           [A]
-│   ├── ServicioProduccion.java          [B]
-│   └── ServicioConsultas.java            [B] Consultas cruzadas
-├── excepciones/
-│   ├── NegocioException.java             [AMBOS] Base
-│   ├── ElementoNoEncontradoException.java[AMBOS]
-│   ├── ExistenciasInsuficientesEx.java  [A]
-│   └── TransicionInvalidaException.java  [B]
-├── presentacion/
-│   ├── MenuPrincipal.java                [B]
-│   ├── MenuColaboradores.java            [A]
-│   ├── MenuInventario.java               [A]
-│   └── MenuProduccion.java              [B]
-└── util/
-    └── Consola.java                      [AMBOS] Lectura validada
+POO-MAQUILA/
+├── build.xml, manifest.mf, nbproject/       Archivos del proyecto NetBeans
+├── test/                                    Test Packages
+└── src/
+    ├── Main.java                                [B]
+    ├── modelo/
+    │   ├── personal/
+    │   │   ├── Colaborador.java                 [A] Abstracta
+    │   │   ├── Operario.java                    [A] extends Colaborador
+    │   │   ├── Supervisor.java                  [A] extends Colaborador
+    │   │   ├── Administrativo.java              [A] extends Colaborador
+    │   │   └── Jornada.java                     [A] Enum
+    │   ├── inventario/
+    │   │   ├── Insumo.java                      [A]
+    │   │   ├── CategoriaInsumo.java             [A] Enum
+    │   │   ├── MovimientoInventario.java        [A] Entrada / Salida
+    │   │   └── TipoMovimiento.java              [A] Enum
+    │   └── produccion/
+    │       ├── Producto.java                    [B] Compuesto por sus etapas
+    │       ├── EstadoProducto.java              [B] Enum
+    │       ├── Etapa.java                       [B] Abstracta
+    │       ├── EtapaCorte.java                  [B]
+    │       ├── EtapaConfeccion.java             [B]
+    │       ├── EtapaControlCalidad.java         [B]
+    │       ├── RequerimientoInsumo.java         [B] Insumo + Cantidad por prenda
+    │       └── RegistroAvance.java              [B] Historial
+    ├── datos/
+    │   ├── Repositorio.java                     [AMBOS] Interfaz genérica
+    │   ├── RepositorioColaboradores.java        [A]
+    │   ├── RepositorioInsumos.java              [A]
+    │   ├── RepositorioProductos.java            [B]
+    │   ├── CargaDatosPersonalInventario.java    [A]
+    │   └── CargaDatosProduccion.java            [B]
+    ├── negocio/
+    │   ├── ServicioColaboradores.java           [A]
+    │   ├── ServicioInventario.java              [A]
+    │   ├── ServicioProduccion.java              [B]
+    │   └── ServicioConsultas.java               [B] Consultas cruzadas
+    ├── excepciones/
+    │   ├── NegocioException.java                [AMBOS] Base
+    │   ├── ElementoNoEncontradoException.java   [AMBOS]
+    │   ├── ExistenciasInsuficientesException.java [A]
+    │   └── TransicionInvalidaException.java     [B]
+    ├── presentacion/
+    │   ├── MenuPrincipal.java                   [B]
+    │   ├── MenuColaboradores.java               [A]
+    │   ├── MenuInventario.java                  [A]
+    │   └── MenuProduccion.java                  [B]
+    └── util/
+        └── Consola.java                         [AMBOS] Lectura validada y limpieza de pantalla
 ```
 
-> **Nota de Arquitectura:** Se incluye una capa `presentacion` independiente además de las tres capas estándar para cumplir explícitamente con la separación de consola solicitada en los requerimientos.
+> **Nota de Arquitectura:** Se incluye una capa `presentacion` independiente además de las tres capas estándar (modelo, datos y negocio) para cumplir explícitamente con la separación de consola solicitada en los requerimientos.
 
 ---
 
 ## Día 0: Contrato Inicial (Acuerdo en Conjunto)
 
-*Tiempo estimado: 1 a 2 horas. Ningún integrante modificará estas firmas sin previo acuerdo.*
+*Ningún integrante modificará estas firmas sin previo acuerdo.*
 
 1. **`Repositorio<T>` (Interfaz genérica):**
    - `agregar(T)`
@@ -82,66 +90,82 @@ src/
    - `eliminar(String)`
 2. **Excepciones base:**
    - `NegocioException`
-   - `ElementoNoEncontradoException`
+   - `ElementoNoEncontradoException` (hereda de `NegocioException`)
 3. **`Consola` (Utilidad con validación):**
    - `leerEntero(msg, min, max)`
-   - `leerTexto(msg)`
+   - `leerTexto(msg)` / `leerTextoOpcional(msg)`
    - `leerDecimal(msg)`
-   - *Garantía:* Ningún método debe fallar o interrumpir el programa si el usuario ingresa datos inválidos.
-4. **Interfaces/Firmas de integración (A ➔ B):**
+   - `pausa()` y `limpiarPantalla()`
+   - *Garantía:* ningún método debe fallar o interrumpir el programa si el usuario ingresa datos inválidos.
+4. **Firmas de integración (A ➔ B):**
    - `Colaborador`: `getId()`, `getNombre()`, `getCategoria()`, `calcularSalario()`
-   - `Insumo`: `getCodigo()`, `getNombre()`, `getExistencias()`
-   - `ServicioColaboradores.buscar(String id)`
+   - `Operario` y `Supervisor`: se usan para validar quién puede ejecutar cada etapa.
+   - `Insumo`: `getCodigo()`, `getNombre()`, `getExistencias()`, `getUnidadMedida()`
+   - `ServicioColaboradores.buscar(String id) throws ElementoNoEncontradoException`
+   - `ServicioInventario.buscar(String codigo) throws ElementoNoEncontradoException`
    - `ServicioInventario.hayExistencias(String codigo, int cant)`
    - `ServicioInventario.consumir(String codigo, int cant) throws ExistenciasInsuficientesException`
-
-> **Entregable Día 0:** Persona A entrega las clases base `Colaborador` e `Insumo` (atributos, constructores y getters) para permitir el inicio de pruebas en el módulo B.
+   - `ExistenciasInsuficientesException(String mensaje)`, que hereda de `NegocioException`
+5. **IDs acordados para los datos iniciales:**
+   - Colaboradores `C001`–`C008` (C001–C003 y C008 operarios, C004–C005 supervisores, C006–C007 administrativos).
+   - Insumos `INS01` tela, `INS02` hilo, `INS03` botones, `INS04` etiquetas, `INS05` bolsas de empaque.
 
 ---
 
-##  Especificaciones por Módulo
+## Especificaciones por Módulo
 
 ### Persona A — Personal e Inventario
 
 * **Modelo:**
-  * **`Colaborador` (Abstracta):** Contiene el método abstracto `calcularSalario()` (*Polimorfismo principal*).
-    * *Operario:* Horas trabajadas + bono.
-    * *Supervisor:* Salario base + plus.
-    * *Administrativo:* Salario fijo.
-  * **`Jornada` (Enum):** Diurna, Mixta, Nocturna (incluye horas máximas por jornada).
-  * **`Insumo`:** Métodos con validación interna para evitar existencias negativas.
+  * **`Colaborador` (Abstracta):** contiene el método abstracto `calcularSalario()` (*polimorfismo principal*).
+    * *Operario:* salario por hora + bono.
+    * *Supervisor:* salario base + plus.
+    * *Administrativo:* salario fijo.
+  * **`Jornada` (Enum):** Diurna, Mixta y Nocturna, con las horas máximas de cada una.
+  * **`Insumo`:** métodos con validación interna para evitar existencias negativas y alerta de stock bajo.
 * **Datos:**
-  * Almacenamiento en `HashMap<String, T>` utilizando `id` / `codigo` como clave.
+  * Almacenamiento en `HashMap<String, T>` usando el `id` o `codigo` como llave.
   * `CargaDatosPersonalInventario`: 6 a 8 colaboradores y 8 a 10 insumos iniciales.
 * **Negocio:**
-  * **`ServicioColaboradores`:** CRUD con validación de ID duplicado y salarios válidos. Reporte de planilla recorriendo colaboradores de forma polimórfica.
-  * **`ServicioInventario`:** Entradas, salidas (generación de `MovimientoInventario`), consulta por categoría y alertas de stock mínimo.
-* **Presentación:** `MenuColaboradores` y `MenuInventario` con submenús correspondientes.
+  * **`ServicioColaboradores`:** CRUD con validación de ID duplicado y salarios válidos. Reporte de planilla que recorre los colaboradores de forma polimórfica.
+  * **`ServicioInventario`:** entradas, salidas (que generan un `MovimientoInventario`), consulta por categoría y alertas de stock mínimo.
+* **Presentación:** `MenuColaboradores` y `MenuInventario` con sus submenús.
 
 ---
 
 ### Persona B — Producción, Consultas y Arranque
 
 * **Modelo:**
-  * **`Lote` / `Producto`:** Relación de composición con `List<Etapa>`, control de etapa actual, estado y `RegistroAvance`.
-  * **`Etapa` (Abstracta):**
-    * `validarResponsable(Colaborador)` (ej. *Control de Calidad* solo permitido para *Supervisor*).
-    * `ejecutar()` (comportamiento por etapa; ej. rechazar y regresar a etapa anterior).
+  * **`Producto`:** composición con `List<Etapa>` (1 a 1..\*), etapa actual, estado. El id lo asigna el sistema (`P001`, `P002`, ...).
+  * **`Etapa` (Abstracta):** composición con sus `RequerimientoInsumo` y sus `RegistroAvance`.
+    * `validarResponsable(Colaborador)`: cada etapa define quién puede hacerla.
+    * `ejecutar(Producto)`: cada etapa hace algo distinto (*polimorfismo*).
+    * `calcularConsumo(RequerimientoInsumo)`: `EtapaCorte` lo sobrescribe para sumar el desperdicio.
+  * **Etapas del proceso:**
+
+    | Orden | Etapa | Responsable | Consume | Regla propia |
+    | :---: | :--- | :--- | :--- | :--- |
+    | 1 | `EtapaCorte` | Operario | Tela | Suma 10 % de desperdicio (redondeado hacia arriba). |
+    | 2 | `EtapaConfeccion` | Operario | Hilo, botones, 1 etiqueta y 1 bolsa | Tiempo estimado de 45 minutos. |
+    | 3 | `EtapaControlCalidad` | Supervisor | Nada | Si hay al menos una prenda defectuosa, el producto queda `RECHAZADO`. |
+
   * **`EstadoProducto` (Enum):** `PENDIENTE`, `EN_PROCESO`, `RECHAZADO`, `TERMINADO`.
 * **Datos:**
-  * `RepositorioProductos`.
-  * `CargaDatosProduccion`: 4 a 5 productos iniciales en distintos estados, vinculados a los IDs de la carga de A.
+  * `RepositorioProductos` (`LinkedHashMap`: búsqueda por id y listado en orden de registro).
+  * `CargaDatosProduccion`: 5 productos iniciales en distintos estados, creados con los IDs de la carga de A.
 * **Negocio:**
-  * **`ServicioProduccion.avanzarProducto(id)` (Integración clave):**
+  * **`ServicioProduccion.avanzarProducto(idProducto, idColaborador, observaciones)` (integración clave):**
     1. Valida al responsable mediante `ServicioColaboradores`.
-    2. Verifica y descuenta existencias mediante `ServicioInventario`.
-    3. Registra avance en el historial.
-    4. Actualiza el estado del producto.
-  * **`ServicioConsultas` (Consultas cruzadas):**
-    * Productos asignados a un colaborador específico.
+    2. Verifica todas las existencias mediante `ServicioInventario` y solo descuenta si alcanzan todas (todo o nada).
+    3. Ejecuta la etapa y actualiza el estado del producto.
+    4. Registra el avance en el historial (`RegistroAvance`).
+  * Además: `crearProducto`, `registrarInspeccion` y `eliminarProducto` (solo productos `PENDIENTE`).
+  * **`ServicioConsultas` (consultas cruzadas):**
+    * Productos en los que trabajó un colaborador.
     * Insumos consumidos por un producto.
     * Productos detenidos por falta de stock.
-* **Presentación y Arranque:** `MenuProduccion`, `MenuPrincipal` y `Main` (inicializa servicios, carga datos y despliega el menú).
+    * Resumen de productos por estado.
+* **Presentación y Arranque:** `MenuProduccion`, `MenuPrincipal` y `Main` (crea los servicios, carga los datos y despliega el menú).
 
 ---
 
@@ -165,6 +189,6 @@ src/
 | :--- | :--- |
 | **5 – 9 Oct** | Análisis, definición de supuestos y validación del diagrama con el docente. |
 | **10 Oct** | Definición del **Contrato del Día 0**. |
-| **11 – 20 Oct**| Desarrollo e implementación individual de módulos. |
-| **21 – 22 Oct**| Integración de módulos y pruebas de estrés / validación de entradas inválidas. |
-| **23 – 25 Oct**| Grabación de video y entrega final (**Límite: 25 de Octubre, 10:00 PM**). |
+| **11 – 20 Oct** | Desarrollo e implementación individual de módulos. |
+| **21 – 22 Oct** | Integración de módulos y pruebas de estrés / validación de entradas inválidas. |
+| **23 – 25 Oct** | Grabación de video y entrega final (**Límite: 25 de Octubre, 10:00 PM**). |
